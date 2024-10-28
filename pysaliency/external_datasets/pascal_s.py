@@ -2,13 +2,13 @@ from __future__ import absolute_import, division, print_function
 
 import os
 import zipfile
+from tempfile import TemporaryDirectory
 
 import numpy as np
 import requests
 
 from ..datasets import ScanpathFixations, Scanpaths
 from ..utils import (
-    TemporaryDirectory,
     atomic_directory_setup,
     download_and_check,
 )
@@ -50,7 +50,7 @@ def get_PASCAL_S(location=None):
     n_stimuli = 850
 
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
 
             try:
                 download_and_check('http://cbs.ic.gatech.edu/salobj/download/salObj.zip',

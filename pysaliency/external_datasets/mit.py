@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function
 import glob
 import os
 import zipfile
+from tempfile import TemporaryDirectory
 
 import numpy as np
 from natsort import natsorted
@@ -11,7 +12,7 @@ from pkg_resources import resource_string
 from scipy.io import loadmat
 
 from ..datasets import ScanpathFixations, Scanpaths
-from ..utils import TemporaryDirectory, atomic_directory_setup, build_padded_2d_array, download_and_check, filter_files, run_matlab_cmd
+from ..utils import atomic_directory_setup, download_and_check, filter_files, run_matlab_cmd
 from .utils import _load, create_stimuli
 
 
@@ -37,7 +38,7 @@ def _get_mit1003(dataset_name, location=None, include_initial_fixation=False, on
             return stimuli, fixations
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://people.csail.mit.edu/tjudd/WherePeopleLook/ALLSTIMULI.zip',
                                os.path.join(temp_dir, 'ALLSTIMULI.zip'),
                                '0d7df8b954ecba69b6796e77b9afe4b6')
@@ -389,7 +390,7 @@ def get_mit300(location=None):
             return stimuli
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://saliency.mit.edu/BenchmarkIMAGES.zip',
                                os.path.join(temp_dir, 'BenchmarkIMAGES.zip'),
                                '03ed32bdf5e4289950cd28df89451260')

@@ -1,20 +1,16 @@
-from __future__ import absolute_import, print_function, division
+from __future__ import absolute_import, division, print_function
 
 import os
 import warnings
 import zipfile
-
+from tempfile import TemporaryDirectory
 
 import numpy as np
 from scipy.io import loadmat
 
-from ..datasets import FixationTrains, Fixations
-from ..utils import (
-    TemporaryDirectory,
-    download_and_check,
-    atomic_directory_setup)
-
-from .utils import create_stimuli, _load
+from ..datasets import Fixations, FixationTrains
+from ..utils import atomic_directory_setup, download_and_check
+from .utils import _load, create_stimuli
 
 
 def get_toronto(location=None):

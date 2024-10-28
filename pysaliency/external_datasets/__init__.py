@@ -10,7 +10,6 @@ from tqdm import tqdm
 
 from ..datasets import FixationTrains
 from ..utils import (
-    TemporaryDirectory,
     download_and_check,
     atomic_directory_setup,
 )

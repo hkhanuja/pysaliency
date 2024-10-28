@@ -1,24 +1,23 @@
-from __future__ import absolute_import, print_function, division, unicode_literals
-from itertools import combinations
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 from abc import ABCMeta, abstractmethod
+from itertools import combinations
+from tempfile import TemporaryDirectory
 
 import numpy as np
-from scipy.io import loadmat
+from boltons.cacheutils import LRU, cached
 from imageio import imsave
+from scipy.io import loadmat
 from scipy.ndimage import gaussian_filter, zoom
-
 from tqdm import tqdm
-from boltons.cacheutils import cached, LRU
 
-from .roc import general_roc, general_rocs_per_positive
-from .numba_utils import fill_fixation_map, auc_for_one_positive
-
-from .utils import TemporaryDirectory, run_matlab_cmd, Cache, average_values, deprecated_class, remove_trailing_nans
-from .datasets import Stimulus, Fixations, check_prediction_shape, get_image_hash
+from .datasets import Fixations, Stimulus, check_prediction_shape, get_image_hash
 from .metrics import CC, NSS, SIM
+from .numba_utils import auc_for_one_positive, fill_fixation_map
+from .roc import general_roc, general_rocs_per_positive
 from .sampling_models import SamplingModelMixin
+from .utils import Cache, average_values, deprecated_class, remove_trailing_nans, run_matlab_cmd
 
 
 def handle_stimulus(stimulus):
@@ -796,7 +795,7 @@ class MatlabSaliencyMapModel(SaliencyMapModel):
         return "{command}('{{stimulus}}', '{{saliency_map}}');".format(command=self.command)
 
     def _saliency_map(self, stimulus):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             stimulus_file = os.path.join(temp_dir, 'stimulus'+self.stimulus_ext)
             if self.only_color_stimuli:
                 if stimulus.ndim == 2:

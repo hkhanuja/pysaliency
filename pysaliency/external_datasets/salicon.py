@@ -1,22 +1,17 @@
-from __future__ import absolute_import, print_function, division
+from __future__ import absolute_import, division, print_function
 
-import zipfile
-import os
 import glob
+import os
+import zipfile
+from tempfile import TemporaryDirectory
 
 import numpy as np
 from scipy.io import loadmat
 from tqdm import tqdm
 
-from ..datasets import Fixations, read_hdf5, clip_out_of_stimulus_fixations
-from ..utils import (
-    TemporaryDirectory,
-    download_file_from_google_drive,
-    check_file_hash,
-    atomic_directory_setup)
-
-from .utils import create_stimuli, _load
-
+from ..datasets import Fixations, clip_out_of_stimulus_fixations, read_hdf5
+from ..utils import atomic_directory_setup, check_file_hash, download_file_from_google_drive
+from .utils import _load, create_stimuli
 
 
 def get_SALICON(edition='2015', fixation_type='mouse', location=None):
@@ -102,7 +97,7 @@ def _get_SALICON_stimuli(location, name, edition='2015', fixation_type='mouse'):
         os.makedirs(location, exist_ok=True)
 
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             stimuli_file = os.path.join(temp_dir, 'stimuli.zip')
 
             download_file_from_google_drive('1g8j-hTT-51IG1UFwP0xTGhLdgIUCW5e5', stimuli_file)
@@ -156,7 +151,7 @@ def _get_SALICON_fixations(location, name, edition='2015', fixation_type='mouse'
         os.makedirs(location, exist_ok=True)
 
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             fixations_file = os.path.join(temp_dir, 'fixations.zip')
 
             if edition == '2015':

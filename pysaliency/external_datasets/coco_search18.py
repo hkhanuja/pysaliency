@@ -4,13 +4,14 @@ import os
 import shutil
 import zipfile
 from hashlib import md5
+from tempfile import TemporaryDirectory
 
 import numpy as np
 from PIL import Image
 from tqdm import tqdm
 
 from ..datasets import ScanpathFixations, Scanpaths, create_subset
-from ..utils import TemporaryDirectory, atomic_directory_setup, download_and_check, filter_files
+from ..utils import atomic_directory_setup, download_and_check, filter_files
 from .utils import _load, create_stimuli
 
 condition_mapping = {
@@ -80,7 +81,7 @@ def get_COCO_Search18(location=None, split=1, merge_tasks=True, unique_images=Tr
         os.makedirs(location)
 
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://vision.cs.stonybrook.edu/~cvlab_download/COCOSearch18-images-TP.zip',
                                os.path.join(temp_dir, 'COCOSearch18-images-TP.zip'),
                                '4a815bb591cb463ab77e5ba0c68fedfb')

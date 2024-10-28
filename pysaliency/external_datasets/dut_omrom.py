@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function
 import glob
 import os
 import zipfile
+from tempfile import TemporaryDirectory
 from typing import Tuple
 
 import numpy as np
@@ -11,7 +12,6 @@ from tqdm import tqdm
 
 from ..datasets import ScanpathFixations, Scanpaths, Stimuli
 from ..utils import (
-    TemporaryDirectory,
     atomic_directory_setup,
     download_and_check,
 )
@@ -53,7 +53,7 @@ def get_DUT_OMRON(location=None) -> Tuple[Stimuli, ScanpathFixations]:
     n_fixations = 0
 
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
 
             download_and_check('http://saliencydetection.net/dut-omron/download/DUT-OMRON-image.zip',
                                os.path.join(temp_dir, 'DUT-OMRON-image.zip'),

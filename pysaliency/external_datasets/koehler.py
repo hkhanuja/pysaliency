@@ -1,23 +1,21 @@
-from __future__ import absolute_import, print_function, division
-
-import zipfile
-import os
+from __future__ import absolute_import, division, print_function
 
 import itertools
+import os
+import zipfile
+from tempfile import TemporaryDirectory
+
 import numpy as np
 from scipy.io import loadmat
-
-from boltons.fileutils import mkdir_p
 from tqdm import tqdm
 
 from ..datasets import FixationTrains
 from ..utils import (
-    TemporaryDirectory,
     atomic_directory_setup,
     check_file_hash,
-    )
+)
+from .utils import _load, create_stimuli
 
-from .utils import  create_stimuli, _load
 
 def _get_koehler_fixations(data, task, n_stimuli):
     tasks = {'freeviewing': 'freeview',

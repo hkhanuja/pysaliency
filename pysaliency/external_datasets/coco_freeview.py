@@ -1,12 +1,13 @@
 import json
 import os
 import zipfile
+from tempfile import TemporaryDirectory
 
 import numpy as np
 from tqdm import tqdm
 
 from ..datasets import ScanpathFixations, Scanpaths, create_subset
-from ..utils import TemporaryDirectory, atomic_directory_setup, download_and_check, filter_files
+from ..utils import atomic_directory_setup, download_and_check, filter_files
 from .coco_search18 import _prepare_stimuli
 from .utils import _load, create_stimuli
 
@@ -159,7 +160,7 @@ def get_COCO_Freeview(location=None, test_data=None):
         os.makedirs(location)
 
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://vision.cs.stonybrook.edu/~cvlab_download/COCOSearch18-images-TP.zip',
                                os.path.join(temp_dir, 'COCOSearch18-images-TP.zip'),
                                '4a815bb591cb463ab77e5ba0c68fedfb')

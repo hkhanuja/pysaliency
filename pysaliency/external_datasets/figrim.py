@@ -1,22 +1,21 @@
-from __future__ import absolute_import, print_function, division
+from __future__ import absolute_import, division, print_function
 
-import zipfile
-import os
 import glob
+import os
+import zipfile
+from tempfile import TemporaryDirectory
 
 import numpy as np
-from scipy.io import loadmat
-from natsort import natsorted
 from boltons.fileutils import mkdir_p
+from natsort import natsorted
+from scipy.io import loadmat
 
 from ..datasets import FixationTrains
 from ..utils import (
-    TemporaryDirectory,
-    download_and_check,
     atomic_directory_setup,
+    download_and_check,
 )
-
-from .utils import create_stimuli, _load
+from .utils import _load, create_stimuli
 
 
 def _load_FIGRIM_data(filename, stimuli_indices, stimulus_type):
@@ -94,7 +93,7 @@ def get_FIGRIM(location=None):
             return stimuli, fixations
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://figrim.mit.edu/Fillers.zip',
                                os.path.join(temp_dir, 'Fillers.zip'),
                                'dc0bc9561b5bc90e158ec32074dd1060')

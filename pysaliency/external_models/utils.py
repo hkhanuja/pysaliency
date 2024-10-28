@@ -1,13 +1,15 @@
-from __future__ import absolute_import, print_function, division, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
+import tarfile
 import tempfile
 import zipfile
-import tarfile
-from pkg_resources import resource_string,  resource_listdir
+from tempfile import TemporaryDirectory
 
-from ..utils import TemporaryDirectory, download_and_check
+from pkg_resources import resource_listdir, resource_string
+
 from ..quilt import QuiltSeries
+from ..utils import download_and_check
 
 
 def write_file(filename, contents):

@@ -7,7 +7,7 @@ import os
 
 import numpy as np
 
-from pysaliency.utils import LazyList, TemporaryDirectory, Cache, get_minimal_unique_filenames, atomic_directory_setup, build_padded_2d_array
+from pysaliency.utils import LazyList, Cache, get_minimal_unique_filenames, atomic_directory_setup, build_padded_2d_array
 from test_helpers import TestWithData
 
 
@@ -72,15 +72,6 @@ class TestLazyList(TestWithData):
 
         self.assertEqual(dict(lazy_list._cache), {i: i**2 for i in range(length)})
         self.assertEqual(list(lazy_list), [i**2 for i in range(length)])
-
-
-class TestTemporaryDirectory(unittest.TestCase):
-    def test_temporary_directory(self):
-        with TemporaryDirectory() as tmp_dir:
-            self.assertTrue(os.path.isdir(tmp_dir))
-
-        self.assertFalse(os.path.isdir(tmp_dir))
-        self.assertFalse(os.path.exists(tmp_dir))
 
 
 def test_atomic_directory_setup_success(tmp_path):

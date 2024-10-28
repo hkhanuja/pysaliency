@@ -10,7 +10,7 @@ from boltons.fileutils import mkdir_p
 import numpy as np
 from scipy.ndimage import zoom
 
-from ..utils import TemporaryDirectory, download_and_check, run_matlab_cmd
+from ..utils import download_and_check, run_matlab_cmd
 from ..quilt import QuiltSeries
 from ..saliency_map_models import MatlabSaliencyMapModel, SaliencyMapModel
 

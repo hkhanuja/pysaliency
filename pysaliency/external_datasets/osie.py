@@ -1,21 +1,20 @@
-from __future__ import absolute_import, print_function, division
+from __future__ import absolute_import, division, print_function
 
 import os
 import urllib
+from tempfile import TemporaryDirectory
 
 import numpy as np
-from scipy.io import loadmat
 from boltons.fileutils import mkdir_p
+from scipy.io import loadmat
 from tqdm import tqdm
 
 from ..datasets import FixationTrains
 from ..utils import (
-    TemporaryDirectory,
-    download_and_check,
     atomic_directory_setup,
+    download_and_check,
 )
-
-from .utils import create_stimuli, _load
+from .utils import _load, create_stimuli
 
 
 def get_OSIE(location=None):
@@ -45,7 +44,7 @@ def get_OSIE(location=None):
             return stimuli, fixations
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             stimuli_src_location = os.path.join(temp_dir, 'stimuli')
             mkdir_p(stimuli_src_location)
             images = []

@@ -1,13 +1,14 @@
-from __future__ import absolute_import, print_function, division, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 import zipfile
+from tempfile import TemporaryDirectory
+
 from pkg_resources import resource_string
 
-from ..utils import TemporaryDirectory, download_and_check, run_matlab_cmd
 from ..saliency_map_models import MatlabSaliencyMapModel
-
-from .utils import extract_zipfile, apply_quilt, download_extract_patch, ExternalModelMixin
+from ..utils import download_and_check, run_matlab_cmd
+from .utils import ExternalModelMixin, apply_quilt, download_extract_patch, extract_zipfile
 
 
 class AIM(ExternalModelMixin, MatlabSaliencyMapModel):

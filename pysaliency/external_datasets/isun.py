@@ -1,18 +1,14 @@
-from __future__ import absolute_import, print_function, division
+from __future__ import absolute_import, division, print_function
 
-import zipfile
 import os
+import zipfile
+from tempfile import TemporaryDirectory
 
 from scipy.io import loadmat
 
 from ..datasets import FixationTrains
-from ..utils import (
-    TemporaryDirectory,
-    filter_files,
-    download_and_check,
-    atomic_directory_setup)
-
-from .utils import create_stimuli, _load
+from ..utils import atomic_directory_setup, download_and_check, filter_files
+from .utils import _load, create_stimuli
 
 
 # TODO: Add test
@@ -44,7 +40,7 @@ def get_iSUN(location=None):
             return stimuli_training, stimuli_validation, stimuli_testing, fixations_training, fixations_validation
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://lsun.cs.princeton.edu/challenge/2015/eyetracking/data/training.mat',
                                os.path.join(temp_dir, 'training.mat'),
                                '5a8b15134b17c7a3f69b087845db1363')

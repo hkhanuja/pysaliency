@@ -1,25 +1,20 @@
-from __future__ import absolute_import, print_function, division
+from __future__ import absolute_import, division, print_function
 
-import zipfile
+import glob
 import os
 import warnings
-import glob
+import zipfile
+from tempfile import TemporaryDirectory
 
 import numpy as np
-from scipy.io import loadmat
 from natsort import natsorted
 from pkg_resources import resource_string
+from scipy.io import loadmat
 from tqdm import tqdm
 
 from ..datasets import FixationTrains
-from ..utils import (
-    TemporaryDirectory,
-    filter_files,
-    run_matlab_cmd,
-    download_and_check,
-    atomic_directory_setup)
-
-from .utils import create_stimuli, _load
+from ..utils import atomic_directory_setup, download_and_check, filter_files, run_matlab_cmd
+from .utils import _load, create_stimuli
 
 
 def get_cat2000_test(location=None):
@@ -47,7 +42,7 @@ def get_cat2000_test(location=None):
             return stimuli
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://saliency.mit.edu/testSet.zip',
                                os.path.join(temp_dir, 'testSet.zip'),
                                '903ec668df2e5a8470aef9d8654e7985')
@@ -170,7 +165,7 @@ def _get_cat2000_train(name, location):
             return stimuli, fixations
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://saliency.mit.edu/trainSet.zip',
                                os.path.join(temp_dir, 'trainSet.zip'),
                                '56ad5c77e6c8f72ed9ef2901628d6e48')
@@ -298,7 +293,7 @@ def _get_cat2000_train_v1_1(name, location):
             return stimuli, fixations
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             download_and_check('http://saliency.mit.edu/trainSet.zip',
                                os.path.join(temp_dir, 'trainSet.zip'),
                                '56ad5c77e6c8f72ed9ef2901628d6e48')

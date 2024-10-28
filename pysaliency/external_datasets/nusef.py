@@ -3,18 +3,17 @@ from __future__ import absolute_import, division, print_function
 import glob
 import os
 import zipfile
-from datetime import datetime, timedelta
+from datetime import datetime
+from tempfile import TemporaryDirectory
 
 from tqdm import tqdm
 
 from ..datasets import FixationTrains
 from ..utils import (
-    TemporaryDirectory,
     atomic_directory_setup,
     download_and_check,
 )
 from .utils import _load, create_stimuli
-
 
 IMAGE_TYPOS = {
     '3005_0.jpg': '3005.1.jpg',
@@ -92,7 +91,7 @@ def get_NUSEF_public(location=None):
             return stimuli, fixations
         os.makedirs(location)
     with atomic_directory_setup(location):
-        with TemporaryDirectory(cleanup=True) as temp_dir:
+        with TemporaryDirectory() as temp_dir:
 
             source_directory = os.path.join(location, 'src')
             os.makedirs(source_directory)
