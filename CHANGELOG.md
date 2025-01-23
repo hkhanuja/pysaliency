@@ -25,6 +25,7 @@
   * Enhancement: preloaded stimulus ids are passed on to subsets of Stimuli and FileStimuli.
   * Feature: `pysaliency.read_hdf5` now takes additional keyword arguments which are passed to the respective class methods. This allows, e.g., to load `FileStimuli` with caching disabled.
   * Enhancement: `pysaliency.HDF5Model` and `pysaliency.HDF5SaliencyMapModel` now better handle the case of loading a model for a subset of entries in the HDF5 file which might be saved under a certain common prefix.
+  * Feature: `pysaliency.saliency_map_conversation_torch` now specifies constraints, where applicable, as linear. To that end, `pysaliency.optpy` now allows specifying linear constraints. This results in better optimization performance, especially since scipy 1.15.0 fixed a bug that in our case actually helped.
 
 
 * 0.2.22:
